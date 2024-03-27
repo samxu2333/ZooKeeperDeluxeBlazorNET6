@@ -1,0 +1,172 @@
+﻿@page "/"
+@using ZooKeeperDeluxe
+
+<style>
+
+    button {
+        width: 75px;
+        height: 75px;
+        font-size: 50px;
+    }
+
+        button.sm {
+            display: inline-flex;
+            width: 50px;
+            height: 50px;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+        }
+</style>
+
+<div class="container">
+    <div class="row">
+        <h2>Game Goals:</h2>
+        <ul>
+            <li>Completely fill the zoo.</li>
+            <li>Once every space is filled, the zoo will expand in a random direction.</li>
+            <li>If the zoo reaches 10x10 and is filled, you win.</li>
+        </ul>
+    </div>
+    <div class="row">
+        <h3>Animals:</h3>
+        <ul>
+            <li>
+                Cats and mice are quick. Elephants are slow.
+            </li>
+            <li>Cats eat mice. Mice eat grass. Elephants don't have to eat; they just live to stomp on things.</li>
+            <li>Each turn that they eat, cats and mice become faster.</li>
+            <li>Each turn that they fail to eat, cats and mice become slower.</li>
+            <li>Each turn that they flee, mice become even slower.</li>
+            <li>Each turn that they fail to stomp, elephants become slower; they never become faster.</li>
+            <li>1 is the fastest reaction time; 9 is the slowest.</li>
+            <li>If an animal's reaction time is slower than 9, the animal disappears into the quantum realm (sounds better than death, right?!)</li>
+            <li>Each animals has different amounts time without eating before dying. There is a visual indicator besides reaction time in zone showing the remaining time for animals</li>
+        </ul>
+    </div>
+    <div class="row">
+        <h4>Objects:</h4>
+        <ul>
+            <li>Grass and Boulders can't move (sad!)</li>
+            <li>Grass and Boulders also don't have to eat (yay?)</li>
+        </ul>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <h1 style="text-align:end">Add Zones:</h1>
+        </div>
+        <div class="col-1">
+            <button @onclick="@(() => Game.AddZones(Direction.down))"
+                    type="button" class="sm btn btn-outline-dark">
+                <h2>⏬</h2>
+            </button>
+        </div>
+        <div class="col-1">
+            <button @onclick="@(() => Game.AddZones(Direction.right))"
+                    type="button" class="sm btn btn-outline-dark">
+                <h2>⏩</h2>
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <hr />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <h1 style="text-align:end">Add to Holding:</h1>
+        </div>
+        <div class="col-1">
+            <button @onclick="@(() => Game.AddToHolding("cat"))"
+                    type="button" class="sm btn btn-outline-dark">
+                <h2>🐱</h2>
+            </button>
+        </div>
+        <div class="col-1">
+            <button @onclick="@(() => Game.AddToHolding("mouse"))"
+                    type="button" class="sm btn btn-outline-dark">
+                <h2>🐭</h2>
+            </button>
+        </div>
+        <div class="col-1">
+            <button @onclick="@(() => Game.AddToHolding("grass"))"
+                    type="button" class="sm btn btn-outline-dark">
+                <h2>🌾</h2>
+            </button>
+        </div>
+        <div class="col-1">
+            <button @onclick="@(() => Game.AddToHolding("boulder"))"
+                    type="button" class="sm btn btn-outline-dark">
+                <h2>🪨</h2>
+            </button>
+        </div>
+        <div class="col-1">
+            <button @onclick="@(() => Game.AddToHolding("elephant"))"
+                    type="button" class="sm btn btn-outline-dark">
+                <h2>🐘</h2>
+            </button>
+        </div>
+        <div class="col-1">
+            <button @onclick="@(() => Game.AddToHolding("chick"))"
+                    type="button" class="sm btn btn-outline-dark">
+                <h2>🐥</h2>
+            </button>
+        </div>
+        <div class="col-1">
+            <button @onclick="@(() => Game.AddToHolding("raptor"))"
+                    type="button" class="sm btn btn-outline-dark">
+                <h2>🦅</h2>
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <hr />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <h1 style="text-align:end">Holding Pen:</h1>
+        </div><div class="col-6">
+            <button disabled type="button" class="btn btn-outline-dark">
+                <h2>@Game.holdingPen.emoji<sup>@Game.holdingPen.rtLabel <sup>@Game.holdingPen.remainingLabel</sup></sup></h2>
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <hr />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <table align="center">
+                @for (var y = 0; y < Game.numCellsY; y++)
+                {
+                    <tr>
+                        @for (var x = 0; x < Game.numCellsX; x++)
+                        {
+                            var a = Game.animalZones[y][x];
+                            <td>
+                                <button @onclick="@(() => Game.ZoneClick(a))"
+                                        type="button" class="btn btn-outline-dark">
+                                    <h2>@a.emoji<sup>@a.rtLabel<sup>@a.remainingLabel</sup></sup></h2>
+                                </button>
+                            </td>
+                        }
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+</div>
+
+@code {
+    protected override void OnInitialized()
+    {
+        Game.SetUpGame();
+    }
+}
+
+
