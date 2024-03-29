@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace ZooKeeperDeluxe
@@ -116,19 +117,12 @@ namespace ZooKeeperDeluxe
                     for (var x = 0; x < numCellsX; x++)
                     {
                         var zone = animalZones[y][x];
-                        int existingTime = 1;
                         if (zone.occupant as Mouse != null && ((Mouse)zone.occupant).reactionTime == r && !((Mouse)zone.occupant).acted)
                         {
                             if (r < 6) // activate mouse that aren't set to disappear
                             {
                                 ((Mouse)zone.occupant).acted = true;
                                 ((Mouse)zone.occupant).Activate();
-                                existingTime++;
-                                if (existingTime > 2)
-                                {
-                                    Birth((Mouse)zone.occupant);
-                                }
-                              
                             }
                             else // bye bye mouse!
                             {
@@ -191,9 +185,9 @@ namespace ZooKeeperDeluxe
                     }
                 }
             }
-            for (var y=0; y<numCellsY; y++)
+            for (var y = 0; y < numCellsY; y++)
             {
-                for (var x = 0; x<numCellsX; x++)
+                for (var x = 0; x < numCellsX; x++)
                 {
                     var zone = animalZones[y][x];
                     if (zone.occupant as Animal != null)
@@ -202,37 +196,39 @@ namespace ZooKeeperDeluxe
                     }
                 }
             }
-        }
 
-        static public void Birth(Animal reproducer)
-        {
-            int x = reproducer.location.x;
-            int y = reproducer.location.y;
-
-            var zoneUp = animalZones[y-1][x];
-            var zoneDown = animalZones[y + 1][x];
-            var zoneLeft = animalZones[y][x - 1];
-            var zoneRight = animalZones[y][x + 1];
-            if (y >= 0 && x >= 0 && y <= numCellsY - 1 && x <= numCellsX - 1)
+           /* for (var y = 0; y < numCellsY; y++)
             {
-                if (zoneUp.occupant as Animal == null)
+                for (var x = 0; x < numCellsX; x++)
                 {
-                    zoneUp.occupant = reproducer;
-                }
-                else if (zoneDown.occupant as Animal == null)
-                {
-                    zoneDown.occupant = reproducer;
-                }
-                else if (zoneLeft.occupant as Animal == null)
-                {
-                    zoneLeft.occupant = reproducer;
-                }
-                else if (zoneRight.occupant as Animal == null)
-                {
-                    zoneRight.occupant = reproducer;
-                }
-            }
+                    var zone = animalZones[y][x];
+                    var zoneUp = animalZones[y - 1][x];
+                    var zoneDown = animalZones[y + 1][x];
+                    var zoneLeft = animalZones[y][x - 1];
+                    var zoneRight = animalZones[y][x + 1];
+                    
+                    if ((zone.occupant is Mouse mouse) && (mouse.reactionTime > 2))
+                    {
+                       if (zoneUp.occupant == null)
+                        {
+                            zoneUp.occupant = new Mouse("mouse");
+                        }
+                        else if (zoneDown.occupant == null)
+                        {
+                            zoneDown.occupant = new Mouse("mouse");
+                        }
+                        else if (zoneLeft.occupant == null)
+                        {
+                            zoneLeft.occupant = new Mouse("mouse");
+                        }
+                        else if (zoneRight.occupant == null)
+                        {
+                            zoneRight.occupant = new Mouse("mouse");
+                        }
 
+                    }
+                }*/
+            
         }
 
         static public bool Seek(int x, int y, Direction d, string target)

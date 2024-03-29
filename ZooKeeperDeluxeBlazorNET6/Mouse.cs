@@ -10,10 +10,12 @@ namespace ZooKeeperDeluxe
             this.name = name; // "this" to clarify instance vs. method parameter
             reactionTime = new Random().Next(1, 4); // reaction time of 1 (fast) to 3
             remainingTime = 6 - reactionTime; //Mouse has 6 times in total without eating before dying
+            ReproductionInterval = 3;
             /* Note that Mouse reactionTime range is smaller than Cat reactionTime,
              * so mice are more likely to react to their surroundings faster than cats!
              Mouse*/
         }
+
 
         public override void Activate()
         {
@@ -36,6 +38,7 @@ namespace ZooKeeperDeluxe
                 SpeedUp();
             }
             remainingTime = 6 - reactionTime; //update remainingTime
+            existingTime++;
         }
 
 
